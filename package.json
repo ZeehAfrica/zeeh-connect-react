@@ -1,6 +1,6 @@
 {
   "name": "zeeh-connect-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A react connect widget for implementing the zeeh connect",
   "author": "ZeeHAfricah",
   "license": "Apache-2.0",
