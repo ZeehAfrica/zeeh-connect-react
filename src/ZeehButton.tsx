@@ -10,8 +10,11 @@ interface ZeeHButtonProps
 
 const ZeehButton = (props: ZeeHButtonProps) => {
   const { zeehInit } = useZeehConnect(props)
-
-  return <button onClick={() => zeehInit()}>{props.children}</button>
+  return (
+    <button onClick={() => zeehInit()} {...props}>
+      {props.children}
+    </button>
+  )
 }
 
 export default ZeehButton

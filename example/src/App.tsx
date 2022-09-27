@@ -1,20 +1,43 @@
-import { useState } from 'react'
-import { ZeeHButton } from 'zeeh-connect-react'
+import {
+  useZeeHConnect,
+  ZeeHEvents,
+  ZeeHResponseType,
+  ZeeHButton,
+} from '../../src/'
+
+const ZeeHConnectUsingHooks = () => {
+  const config = {
+    publicKey: 'Ayo',
+    onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
+      console.log(event)
+      console.log(data)
+    },
+  }
+  const { zeehInit } = useZeeHConnect(config)
+
+  return <button onClick={() => zeehInit()}>Link your account(Hook)</button>
+}
+
+const ZeeHConnectUsingButton = () => {
+  const config = {
+    publicKey: 'Ayo',
+    onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
+      console.log(event)
+      console.log(data)
+    },
+  }
+  return (
+    <ZeeHButton style={{ backgroundColor: 'blue', color: 'white' }} {...config}>
+      Link your account(Button)
+    </ZeeHButton>
+  )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <p>Zeeh Connect React</p>
-      <ZeeHButton
-        publicKey="Ayo"
-        onEvent={(event) => {
-          console.log(event)
-        }}
-      >
-        Click me
-      </ZeeHButton>
+    <div>
+      <ZeeHConnectUsingHooks />
+      <ZeeHConnectUsingButton />
     </div>
   )
 }

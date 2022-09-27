@@ -1,19 +1,19 @@
 import { IFrameMessage, ZeeHConnectProps, ZeeHEvents } from './types'
 
-let eventconst: any
-const closeDivStyle: string =
+var eventvar: any
+var closeDivStyle: string =
   'position: fixed; width: 100%; height:100%; align: center; display:flex; justify:center; color: #FFF; font-size: 25px'
 
-const containerStyle: string =
+var containerStyle: string =
   'position:fixed;overflow: hidden;display:none;justify-content: center;align-items: center;z-index: 999999;height: 100%;overflow: auto;width: 100%;color: transparent;background: rgba(0, 0, 0, 0.6);visibility:hidden;margin: 0;top:0;right:0;bottom:0;left:0;'
 
-const iframeStyle =
+var iframeStyle =
   'position: absolute;display: flex;border-radius: 5px;justify-content: center;align-content: center;overflow: auto;z-index: 99999999;width:400px;height: 90vh;min-height:500px;transition: opacity 0.3s ease 0s;visibility:hidden;margin: 0;'
 
-const iframeMobilestyle =
-  'position: absolute;display: flex;border-radius: 5px;justify-content: center;align-content: center;overflow: auto;z-index: 99999999;width:400px;height: 100%;min-height:500px;transition: opacity 0.3s ease 0s;visibility:hidden;margin: 0;'
+var iframeMobilestyle =
+  'position: absolute;display: flex;border-radius: 5px;justify-content: center;align-content: center;overflow: auto;z-index: 99999999;width:100%;height: 100%;min-height:500px;transition: opacity 0.3s ease 0s;visibility:hidden;margin: 0;'
 
-const loaderStyles: string = `.app-loader {
+var loaderStyles: string = `.app-loader {
   text-align: center;
   color: white;
   width: 100%;
@@ -143,7 +143,7 @@ function addStyle() {
 }
 
 function turnOnVisibility() {
-  const container: HTMLDivElement = document.getElementById(
+  var container: HTMLDivElement = document.getElementById(
     'zeeh-connect--widget-div'
   ) as HTMLDivElement
   container.style.display = 'flex'
@@ -154,58 +154,58 @@ function turnOffVisibility() {
   if (document.getElementById('zeeh-connect--widget-div')) {
     document.getElementById('zeeh-connect--widget-div')!.remove()
   }
-  window.removeEventListener('message', eventconst, false)
+  window.removeEventListener('message', eventvar, false)
 }
 
-function getEvent(call_back: any) {
-  eventconst = window.addEventListener('message', function (event) {
-    try {
-      const data: IFrameMessage = JSON.parse(event.data)
-      switch (data.event) {
-        case ZeeHEvents.ACCOUNT_LINKED:
-          call_back(ZeeHEvents.ACCOUNT_LINKED, data.data)
-        case ZeeHEvents.WIDGET_CLOSED:
-          turnOffVisibility()
-          call_back(ZeeHEvents.WIDGET_CLOSED, data.data)
-        case ZeeHEvents.WIDGET_OPENED:
-          call_back(ZeeHEvents.WIDGET_OPENED, data.data)
-        case ZeeHEvents.ACCOUNT_LINKED_SUCCESS:
-          call_back(ZeeHEvents.ACCOUNT_LINKED_SUCCESS, data.data)
-        case ZeeHEvents.INSTITUTION_SELECTED:
-          call_back(ZeeHEvents.INSTITUTION_SELECTED, data.data)
-        case ZeeHEvents.WIDGET_LOAD_ERROR:
-          turnOffVisibility()
-          call_back(ZeeHEvents.WIDGET_LOAD_ERROR, data.data)
-      }
-    } catch (error) {
-      return
+function getEvent(onEvent: any) {
+  eventvar = window.addEventListener('message', function (event) {
+    if (event.origin !== 'https://widget.zeeh.africa') return
+    var data: IFrameMessage = JSON.parse(event.data)
+    switch (data.event) {
+      case ZeeHEvents.ACCOUNT_LINKED:
+        onEvent(ZeeHEvents.ACCOUNT_LINKED, data.data)
+        break
+      case ZeeHEvents.WIDGET_CLOSED:
+        onEvent(ZeeHEvents.WIDGET_CLOSED, data.data)
+        turnOffVisibility()
+        break
+      case ZeeHEvents.WIDGET_OPENED:
+        onEvent(ZeeHEvents.WIDGET_OPENED, data.data)
+        break
+      case ZeeHEvents.ACCOUNT_LINKED_SUCCESS:
+        onEvent(ZeeHEvents.ACCOUNT_LINKED_SUCCESS, data.data)
+        break
+      case ZeeHEvents.INSTITUTION_SELECTED:
+        onEvent(ZeeHEvents.INSTITUTION_SELECTED, data.data)
+        break
+      case ZeeHEvents.WIDGET_LOAD_ERROR:
+        onEvent(ZeeHEvents.WIDGET_LOAD_ERROR, data.data)
+        turnOffVisibility()
+        break
     }
   })
 }
 
-const ZeeHInit = (config: ZeeHConnectProps) => {
+var ZeeHInit = (config: ZeeHConnectProps) => {
   getEvent(config.onEvent)
   addStyle()
   if (!document.getElementById('zeeh-connect--widget-div')) {
-    const container: any = document.createElement('div')
+    var container: HTMLDivElement = document.createElement('div')
     container.setAttribute('id', 'zeeh-connect--widget-div')
     container.setAttribute('style', containerStyle)
-    const closeDiv = document.createElement('div')
+    var closeDiv = document.createElement('div')
     closeDiv.setAttribute('style', closeDivStyle)
     closeDiv.setAttribute('id', 'closediv')
-    const zhbutton: HTMLDivElement = document.getElementById(
-      'ZHFRM'
-    ) as HTMLDivElement
-    zhbutton.insertBefore(container, zhbutton.childNodes[0])
-
-    const loader = createLoader()
+    var loader = createLoader()
     container.appendChild(loader)
+    document.body.appendChild(container)
   }
 
-  const iframe: HTMLIFrameElement = document.createElement(
+  var iframe: HTMLIFrameElement = document.createElement(
     'IFRAME'
   ) as HTMLIFrameElement
-  const source = new URL(`https://widget.zeeh.africa/${config.publicKey}`)
+  var source = new URL(`https://widget.zeeh.africa/${config.publicKey}`)
+
   if (config.userReference) {
     source.searchParams.set('userReference', config.userReference)
   }
@@ -230,7 +230,7 @@ const ZeeHInit = (config: ZeeHConnectProps) => {
   turnOnVisibility()
 
   iframe.onload = () => {
-    const loader: HTMLDivElement = document.getElementById(
+    var loader: HTMLDivElement = document.getElementById(
       'zeeh-connect-app-loader'
     ) as HTMLDivElement
     if (iframe.style.visibility === 'visible') {
@@ -242,7 +242,7 @@ const ZeeHInit = (config: ZeeHConnectProps) => {
   iframe.focus({ preventScroll: false })
   containe.focus({ preventScroll: false })
   iframe.onerror = () => {
-    const frame: HTMLIFrameElement = document.getElementById(
+    var frame: HTMLIFrameElement = document.getElementById(
       'zeeh-connect--frame-id'
     ) as HTMLIFrameElement
     frame.style.visibility = 'hidden'

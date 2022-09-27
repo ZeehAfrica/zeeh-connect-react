@@ -1,15 +1,15 @@
 export type ZeeHConnectProps = {
   publicKey: string
   userReference?: string
-  onEvent: (event: ResponseType) => void
+  onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => void
 }
 
 export type IFrameMessage = {
-  event: string
-  data: ResponseType
+  event: ZeeHEvents
+  data: ZeeHResponseType
 }
 
-export type ResponseType = {
+export type ZeeHResponseType = {
   message: string
   timeStamps: string
   bank?: string
