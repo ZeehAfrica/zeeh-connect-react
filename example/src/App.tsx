@@ -7,7 +7,7 @@ import {
 
 const ZeeHConnectUsingHooks = () => {
   const config = {
-    publicKey: 'Ayo',
+    publicKey: 'Ay',
     onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
       console.log(event)
       console.log(data)

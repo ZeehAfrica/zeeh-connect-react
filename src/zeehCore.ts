@@ -238,6 +238,10 @@ var ZeeHInit = (config: ZeeHConnectProps) => {
     } else {
       iframe.style.visibility = 'visible'
     }
+    config.onEvent(ZeeHEvents.WIDGET_OPENED, {
+      message: 'Widget loaded successfully',
+      timeStamps: new Date().toISOString(),
+    })
   }
   iframe.focus({ preventScroll: false })
   containe.focus({ preventScroll: false })
@@ -246,6 +250,11 @@ var ZeeHInit = (config: ZeeHConnectProps) => {
       'zeeh-connect--frame-id'
     ) as HTMLIFrameElement
     frame.style.visibility = 'hidden'
+    if (config.onEvent)
+      config.onEvent(ZeeHEvents.WIDGET_LOAD_ERROR, {
+        message: 'Widget failed to load',
+        timeStamps: new Date().toISOString(),
+      })
   }
 }
 
