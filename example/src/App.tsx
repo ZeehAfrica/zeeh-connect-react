@@ -9,9 +9,14 @@ const ZeeHConnectUsingHooks = () => {
   const config = {
     publicKey: 'Ay',
     onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
-      console.log(event)
-      console.log(data)
+      if (event === ZeeHEvents.WIDGET_OPENED) {
+        console.log('widget is opened')
+        console.log(data)
+      }
+      //check for other events here and do your stuff
     },
+    userReference:
+      'your client userId here or any unique idenfier for your client',
   }
   const { zeehInit } = useZeeHConnect(config)
 
