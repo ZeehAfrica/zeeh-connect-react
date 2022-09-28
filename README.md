@@ -128,7 +128,11 @@ function App() {
 export default App
 
 ```
+## Configuration Options
 
+- [`publicKey`](#publicKey)
+- [`onEvent`](#onEvent)
+- [`userReference`](#userReference)
 
 ### <a id="publicKey"></a> `publicKey`
 
@@ -136,22 +140,38 @@ export default App
 
 This is your ZeeH Africa public API key from [ZeeH dashboard](https://dash.zeeh.africa/app).
 
-### <a name="onSuccess"></a> `onSuccess`
+### <a name="onEvent"></a> `onEvent`
 
 #### (data) => { Void }: Required
 
-The closure is called when a user has successfully onboarded their account. It should return back user financial institution details including the [`userReference`](#userReference) passed.
+A set of well defined events help to communicate efficiently with the widget to monitor different stages of the linking. [`userReference`](#userReference) passed.
 
 ```js
 const config = {
   publicKey: 'YOUR_ZeeH Africa_PUBLIC_KEY_HERE',
-  onSuccess: (data) => {
+  onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
     console.log(data);
   },
 };
 ```
+### <a name="connectEvent"></a> Zeeh Events
 
-The data JSON returned from the onSuccess callback.
+#### <a name="eventName"></a> `eventName: String`
+
+Event names corespond to the type of event that occurred. Possible options are in the table below.
+
+| Event Name | Description |
+| ----------- | ----------- |
+| ACCOUNT_LINKED | Triggered If the User has already been linked |
+| WIDGET_OPENED | Triggered when the user opened the Connect Widget. |
+| ACCOUNT_LINKED_SUCCESS | Triggered when the user successfully links their account. |
+| INSTITUTION_SELECTED | Triggered when the user selects an institution. |
+| WIDGET_CLOSED | Triggered when the user closes the widget. |
+| WIDGET_LOAD_ERROR | Triggered when the widget encounters an error |
+
+
+
+The data JSON returned from the ACCOUNT_LINKED_SUCCESS event.
 
 ```js
 {
