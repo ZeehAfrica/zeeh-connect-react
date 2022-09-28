@@ -7,7 +7,7 @@ import {
 
 const ZeeHConnectUsingHooks = () => {
   const config = {
-    publicKey: 'Ay',
+    publicKey: 'your public key here',
     onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
       if (event === ZeeHEvents.WIDGET_OPENED) {
         console.log('widget is opened')
