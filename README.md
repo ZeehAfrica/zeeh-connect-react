@@ -1,34 +1,193 @@
-# npm-react-typescript-template
+# zeeh-connect-react
 
-A template for publishing a React + TypeScript package to npm
+React for implementing ZeeH widget - It is a quick and secure way to link bank accounts to ZeeH from within your React app. ZeeH Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, bank statements etc).
 
-## How to use
+## Documentation
 
-Fork this repo, clone it to your local computer, and edit the `package.json` along with every other required file to match your project.
-Write the code for your package in TypeScript and Sass, compile it, and publish it to [npm](https://npmjs.com).
+For complete information about ZeeH Connect, head to the [docs](https://zeehdocs.zeeh.africa).
 
-To compile your code once, run
+## Getting Started
 
-- `npm run build`.
+Checkout our [get started guide](https://zeehdocs.zeeh.africa/guides/getting-started) to create your developer account and retrieve your Client Token, API Keys, and Private Keys.
 
-To compile your code once and refresh on file change, run
+## Installation
 
-- `npm run start`.
+using npm
 
-To publish your package to npm, make sure you're logged in the correct account by running
+```sh
+npm install zeeh-connect-react
+```
 
-- `npm login`.
+using yarn
 
-Compile your package by running
+```sh
+yarn add zeeh-connect-react
+```
 
-- `npm run build`
+## Usage
+### with hook
 
-Update the package version accordingly by using
+```js
+import {
+  useZeeHConnect,
+  ZeeHEvents,
+  ZeeHResponseType,
+} from '../../src/'
 
-- [`npm version [patch | minor | major]`](https://docs.npmjs.com/about-semantic-versioning)
+const ZeeHConnectUsingHooks = () => {
+  const config = {
+    publicKey: 'pk_VH05d6NcDYUnL0yTT8j1tkBBX', //public key from connect app
+    onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
+      if (event === ZeeHEvents.ACCOUNT_LINKED) {
+        console.log('Account has already been linked')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_OPENED) {
+        console.log('widget is opened')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_CLOSED) {
+        console.log('widget is closed')
+        console.log(data)
+      } else if (event === ZeeHEvents.ACCOUNT_LINKED_SUCCESS) {
+        console.log('Account lnked successfully ')
+        console.log(data)
+      } else if (event === ZeeHEvents.INSTITUTION_SELECTED) {
+        console.log('Institution has been selected on widget')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_LOAD_ERROR) {
+        console.log('Widget faced an error loading up')
+        console.log(data)
+      }
+    },
+    userReference:
+      'your client userId here or any unique idenfier for your client',
+  }
+  const { zeehInit } = useZeeHConnect(config)
 
-Then publish your package by running
+  return <button onClick={() => zeehInit()}>Link your account(Hook)</button>
+}
 
-- `npm publish`
+function App() {
+  return (
+    <div>
+      <ZeeHConnectUsingHooks />
+    </div>
+  )
+}
 
-### Happy Building ♡
+export default App
+```
+
+### with component
+
+```js
+import {
+  ZeeHEvents,
+  ZeeHResponseType,
+  ZeeHButton,
+} from '../../src/'
+
+const ZeeHConnectUsingButton = () => {
+  const config = {
+    publicKey: 'pk_VH05d6NcDYUnL0yTT8j1tkBBX', //public key from connect app
+    onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
+      if (event === ZeeHEvents.ACCOUNT_LINKED) {
+        console.log('Account has already been linked')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_OPENED) {
+        console.log('widget is opened')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_CLOSED) {
+        console.log('widget is closed')
+        console.log(data)
+      } else if (event === ZeeHEvents.ACCOUNT_LINKED_SUCCESS) {
+        console.log('Account lnked successfully ')
+        console.log(data)
+      } else if (event === ZeeHEvents.INSTITUTION_SELECTED) {
+        console.log('Institution has been selected on widget')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_LOAD_ERROR) {
+        console.log('Widget faced an error loading up')
+        console.log(data)
+      }
+    },
+  }
+  return (
+    <ZeeHButton style={{ backgroundColor: 'blue', color: 'white' }} {...config}>
+      Link your account(Button)
+    </ZeeHButton>
+  )
+}
+function App() {
+  return (
+    <div>
+      <ZeeHConnectUsingButton />
+    </div>
+  )
+}
+
+export default App
+
+```
+
+
+### <a id="publicKey"></a> `publicKey`
+
+#### String: Required
+
+This is your ZeeH Africa public API key from [ZeeH dashboard](https://dash.zeeh.africa/app).
+
+### <a name="onSuccess"></a> `onSuccess`
+
+#### (data) => { Void }: Required
+
+The closure is called when a user has successfully onboarded their account. It should return back user financial institution details including the [`userReference`](#userReference) passed.
+
+```js
+const config = {
+  publicKey: 'YOUR_ZeeH Africa_PUBLIC_KEY_HERE',
+  onSuccess: (data) => {
+    console.log(data);
+  },
+};
+```
+
+The data JSON returned from the onSuccess callback.
+
+```js
+{
+  message:"linking successful",
+  timeStamps:"",
+  institution:{
+    _id: 'uuid string',
+    institution: {
+      name: 'FCMB'
+      bankCode:'214'
+      type: 'classic savings',
+    },
+    name: 'jon doe'
+    accountNumber: '1010101010'
+    balance: 5000
+    userReference: 'random string'
+    bvn: 2222
+  }
+}
+```
+
+### <a id="userReference"></a> `userReference`
+
+#### String: Optional
+
+A unique string that should be passed to the connect widget. This will act like an Id of your user that is with Us. you can get account details passing userReference as a params.
+It will be generated automatically if not passed, but it's recommended to always pass it. It could be your client Id.
+
+## Examples
+
+See more examples [here](/example/src/App.tsx).
+
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+[Apache](/LICENSE)

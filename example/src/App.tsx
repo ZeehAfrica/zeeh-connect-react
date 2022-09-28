@@ -7,13 +7,27 @@ import {
 
 const ZeeHConnectUsingHooks = () => {
   const config = {
-    publicKey: 'your public key here',
+    publicKey: 'pk_VH05d6NcDYUnL0yTT8j1tkBBX', //public key from connect app
     onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
-      if (event === ZeeHEvents.WIDGET_OPENED) {
+      if (event === ZeeHEvents.ACCOUNT_LINKED) {
+        console.log('Account has already been linked')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_OPENED) {
         console.log('widget is opened')
         console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_CLOSED) {
+        console.log('widget is closed')
+        console.log(data)
+      } else if (event === ZeeHEvents.ACCOUNT_LINKED_SUCCESS) {
+        console.log('Account lnked successfully ')
+        console.log(data)
+      } else if (event === ZeeHEvents.INSTITUTION_SELECTED) {
+        console.log('Institution has been selected on widget')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_LOAD_ERROR) {
+        console.log('Widget faced an error loading up')
+        console.log(data)
       }
-      //check for other events here and do your stuff
     },
     userReference:
       'your client userId here or any unique idenfier for your client',
@@ -25,10 +39,27 @@ const ZeeHConnectUsingHooks = () => {
 
 const ZeeHConnectUsingButton = () => {
   const config = {
-    publicKey: 'Ayo',
+    publicKey: 'pk_VH05d6NcDYUnL0yTT8j1tkBBX', //public key from connect app
     onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
-      console.log(event)
-      console.log(data)
+      if (event === ZeeHEvents.ACCOUNT_LINKED) {
+        console.log('Account has already been linked')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_OPENED) {
+        console.log('widget is opened')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_CLOSED) {
+        console.log('widget is closed')
+        console.log(data)
+      } else if (event === ZeeHEvents.ACCOUNT_LINKED_SUCCESS) {
+        console.log('Account lnked successfully ')
+        console.log(data)
+      } else if (event === ZeeHEvents.INSTITUTION_SELECTED) {
+        console.log('Institution has been selected on widget')
+        console.log(data)
+      } else if (event === ZeeHEvents.WIDGET_LOAD_ERROR) {
+        console.log('Widget faced an error loading up')
+        console.log(data)
+      }
     },
   }
   return (
