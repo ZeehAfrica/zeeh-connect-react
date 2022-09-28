@@ -1,6 +1,6 @@
 # zeeh-connect-react
 
-React for implementing ZeeH widget - It is a quick and secure way to link bank accounts to ZeeH from within your React app. ZeeH Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, bank statements etc).
+React SDK for implementing ZeeH widget - It is a quick and secure way to link bank accounts to ZeeH from within your React app. ZeeH Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, bank statements etc).
 
 ## Documentation
 
@@ -25,6 +25,7 @@ yarn add zeeh-connect-react
 ```
 
 ## Usage
+
 ### with hook
 
 ```js
@@ -32,7 +33,7 @@ import {
   useZeeHConnect,
   ZeeHEvents,
   ZeeHResponseType,
-} from '../../src/'
+} from 'zeeh-connect-react'
 
 const ZeeHConnectUsingHooks = () => {
   const config = {
@@ -80,11 +81,7 @@ export default App
 ### with component
 
 ```js
-import {
-  ZeeHEvents,
-  ZeeHResponseType,
-  ZeeHButton,
-} from '../../src/'
+import { ZeeHEvents, ZeeHResponseType, ZeeHButton } from 'zeeh-connect-react'
 
 const ZeeHConnectUsingButton = () => {
   const config = {
@@ -126,8 +123,8 @@ function App() {
 }
 
 export default App
-
 ```
+
 ## Configuration Options
 
 - [`publicKey`](#publicKey)
@@ -150,26 +147,26 @@ A set of well defined events help to communicate efficiently with the widget to 
 const config = {
   publicKey: 'YOUR_ZeeH Africa_PUBLIC_KEY_HERE',
   onEvent: (event: ZeeHEvents, data: ZeeHResponseType) => {
-    console.log(data);
+    console.log(data)
+    console.log(event)
   },
-};
+}
 ```
+
 ### <a name="connectEvent"></a> Zeeh Events
 
 #### <a name="eventName"></a> `eventName: String`
 
 Event names corespond to the type of event that occurred. Possible options are in the table below.
 
-| Event Name | Description |
-| ----------- | ----------- |
-| ACCOUNT_LINKED | Triggered If the User has already been linked |
-| WIDGET_OPENED | Triggered when the user opened the Connect Widget. |
+| Event Name             | Description                                               |
+| ---------------------- | --------------------------------------------------------- |
+| ACCOUNT_LINKED         | Triggered If the User has already been linked             |
+| WIDGET_OPENED          | Triggered when the user opened the Connect Widget.        |
 | ACCOUNT_LINKED_SUCCESS | Triggered when the user successfully links their account. |
-| INSTITUTION_SELECTED | Triggered when the user selects an institution. |
-| WIDGET_CLOSED | Triggered when the user closes the widget. |
-| WIDGET_LOAD_ERROR | Triggered when the widget encounters an error |
-
-
+| INSTITUTION_SELECTED   | Triggered when the user selects an institution.           |
+| WIDGET_CLOSED          | Triggered when the user closes the widget.                |
+| WIDGET_LOAD_ERROR      | Triggered when the widget encounters an error             |
 
 The data JSON returned from the ACCOUNT_LINKED_SUCCESS event.
 
